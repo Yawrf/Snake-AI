@@ -34,13 +34,13 @@ public class FXMLDocumentController implements Initializable {
     private SnakeBoard b;
     
     private Timer timer;
-    private int baseSpeed = 100; //ms
-    private int speed = 0;
-    private int speedMod = 5;
+    private int baseSpeed = 100; // base ms the timer starts at
+    private int speed = 0; 
+    private int speedMod = 5; // ms faster the game gets each time the snake eats
     
     private boolean buttonPressed = false;
     
-    private int count = 1;
+    private int count = 1; //Currently Unused
     
     private boolean acidMode = false;
     private Color snakeColor = Color.BLACK;
@@ -49,6 +49,15 @@ public class FXMLDocumentController implements Initializable {
     private Color scoreColor = Color.BLACK;
     private boolean scramble = true;
     
+    /**
+     * Runs all the main processes:
+     * * Runs SnakeBoard's step() function
+     * * Checks if the food was eaten and responds accordingly
+     * * Redraws the Canvas
+     * * Updates the Score
+     * * Allows a new Input
+     * * Ends the Game if the Snake is Dead
+     */
     private void step() {
         
         if(acidMode && scramble) {
@@ -103,11 +112,24 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
+    /**
+     * Draws a rectangle on the Canvas
+     * @param gc
+     * @param x - X Coordinate
+     * @param y - Y Coordinate
+     * @param size - Side length
+     * @param c  - Fill Colour
+     */
     private void drawSquare(GraphicsContext gc, int x, int y, int size, Color c) {
         gc.setFill(c);
         gc.fillRect(x, y, size, size);
     }
     
+    /**
+     * Interprets KeyPresses to tell the board which direction to go
+     * - Only runs if a command has not already been entered since last step()
+     * @param e 
+     */
     @FXML
     private void changeDirection(KeyEvent e) {
 //        System.out.println("Ping");
@@ -155,6 +177,11 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
+    /**
+     * Increases the speed at which the game is called. 
+     * If the speed would drop below 1, it resets it to 1
+     * * Decreases speed by speedMod
+     */
     public void speedUp() {
         speed -= speedMod;
         if(speed <= 0) {
@@ -171,12 +198,19 @@ public class FXMLDocumentController implements Initializable {
         
     }
     
+    /**
+     * Makes a new SnakeBoard (with a new Snake)
+     * Resets the speed to baseSpeed
+     */
     private void setBoard() {
         b = new SnakeBoard((int)board.getWidth(), (int)board.getHeight());
         speed = baseSpeed;
-//        timer.setDelay(speed);
     }
     
+    /**
+     * Creates a new Timer
+     * @param time - Ms between each firing
+     */
     private void setTimer(int time) {
         timer = new Timer(time, e -> step());
         timer.setCoalesce(true);

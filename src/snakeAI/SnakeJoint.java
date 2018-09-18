@@ -19,6 +19,13 @@ public class SnakeJoint {
     public final int size;
     public final int buffer;
     
+    /**
+     * Creates a new SnakeJoint
+     * @param x - x Position
+     * @param y - y Position
+     * @param squareSize - Size of Joint
+     * @param bufferSize - Size between Joints
+     */
     public SnakeJoint(int x, int y, int squareSize, int bufferSize) {
         xPos = x;
         yPos = y;
@@ -26,6 +33,10 @@ public class SnakeJoint {
         buffer = bufferSize;
     }
     
+    /**
+     * Creates a SnakeJoint which is duplicating another SnakeJoint
+     * @param sj SnakeJoint to duplicate
+     */
     public SnakeJoint(SnakeJoint sj) {
         xPos = sj.getX();
         yPos = sj.getY();
@@ -33,18 +44,34 @@ public class SnakeJoint {
         buffer = sj.buffer;
     }
     
+    /**
+     * Returns x Position
+     * @return 
+     */
     public int getX() {
         return xPos;
     }
     
+    /**
+     * Returns y Position
+     * @return 
+     */
     public int getY() {
         return yPos;
     }
     
+    /**
+     * Returns array containing x Position, then y Position
+     * @return 
+     */
     public int[] getPos() {
         return new int[]{xPos, yPos};
     }
     
+    /**
+     * Moves the Joint one position in the given Direction
+     * @param d Direction to move
+     */
     public void move(Direction d) {
         int shift = size + buffer;
         switch(d) {
@@ -58,6 +85,10 @@ public class SnakeJoint {
         }
     }
     
+    /**
+     * Moves the Joint onto the same position as another SnakeJoint
+     * @param sj SnakeJoint to move to position of
+     */
     public void move(SnakeJoint sj) {
         xPos = sj.getX();
         yPos = sj.getY();

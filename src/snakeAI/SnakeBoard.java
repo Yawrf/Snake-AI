@@ -29,6 +29,12 @@ public class SnakeBoard {
     private SnakeObject snake;
     private SnakeFood food;
     
+    /**
+     * Creates new SnakeBoard (with new Snake and new Food)
+     * @param width Maximum X coordinate before the Snake should die
+     * @param height Maximum Y coordinate before the Snake should die
+     * @param foodSeed  What seed the SnakeFood should be generated with
+     */
     public SnakeBoard(int width, int height, long foodSeed) {
         this.width = width;
         this.height = height;
@@ -36,6 +42,11 @@ public class SnakeBoard {
         food = new SnakeFood(width, height, scale, foodSeed);
     } 
     
+    /**
+     * Creates new SnakeBoard (with new Snake and new Food)
+     * @param width Maximum X coordinate before the Snake should die
+     * @param height Maximum Y coordinate before the Snake should die
+     */
     public SnakeBoard(int width, int height) {
         this.width = width;
         this.height = height;
@@ -43,6 +54,10 @@ public class SnakeBoard {
         food = new SnakeFood(width, height, scale, 1537231739434l);
     } 
     
+    /**
+     * Checks if the Snake is at the same spot as the food
+     * @return True if Snake is at food, else False
+     */
     private boolean checkFood() {
         if(snake.atSpot(food.getX(), food.getY())) {
             return true;
@@ -50,6 +65,10 @@ public class SnakeBoard {
         return false;
     }
     
+    /**
+     * Does all actions for the Snake eating the food
+     * * Assumes Snake is at proper location or that location doesn't matter
+     */
     private void eatFood() {
         snake.addScore(foodScore);
         snake.addJoint();
@@ -57,18 +76,36 @@ public class SnakeBoard {
         ate = true;
     }
     
+    /**
+     * Returns if the Snake has eaten since the last time resetAte() was called
+     * @return 
+     */
     public boolean getAte() {
         return ate;
     }
     
+    /**
+     * Resets the ate boolean to false
+     */
     public void resetAte() {
         ate = false;
     }
     
+    /**
+     * Tells the Snake to move in a new direction
+     * @param d Direction of new movement
+     */
     public void setDirection(Direction d) {
         snake.setDirection(d);
     }
     
+    /**
+     * Runs all the main processes:
+     * * Calls the Snake's step() providing it with the current x,y of the food
+     * * Tells the Snake to move
+     * * Has the Snake eat the Food if it's at the correct location
+     * * Increases the Snake's Score
+     */
     public void step() {
         snake.step(food.getX(), food.getY());
         snake.move();
@@ -76,26 +113,44 @@ public class SnakeBoard {
             eatFood();
         }
         snake.addScore(stepScore);
-        if(snake.isDead()) {
-        }
     }
     
+    /**
+     * Returns the SnakeObject in use
+     * @return 
+     */
     public SnakeObject getSnake() {
         return snake;
     }
     
+    /**
+     * Returns the SnakeFood in use
+     * @return 
+     */
     public SnakeFood getFood() {
         return food;
     }
     
+    /**
+     * Returns the size of the SnakeJoints
+     * @return 
+     */
     public int getSize() {
         return squareSize;
     }
     
+    /**
+     * Returns the size of the space between SnakeJoints
+     * @return 
+     */
     public int getBuffer() {
         return squareBuffer;
     }
     
+    /**
+     * Returns the size of the grid used by the Snake
+     * @return 
+     */
     public int getScale() {
         return scale;
     }
