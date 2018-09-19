@@ -105,7 +105,7 @@ public class SnakeFood {
                 overlay = true;
             }
         }
-        if(overlay) {
+        if(overlay && !snake.isDead()) {
             getNew(snake);
         }
     }
