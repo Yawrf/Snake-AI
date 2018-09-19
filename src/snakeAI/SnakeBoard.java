@@ -34,11 +34,12 @@ public class SnakeBoard {
      * @param width Maximum X coordinate before the Snake should die
      * @param height Maximum Y coordinate before the Snake should die
      * @param foodSeed  What seed the SnakeFood should be generated with
+     * @param warpWalls If true, the snake will warp from one side to the other upon contact with a wall
      */
-    public SnakeBoard(int width, int height, long foodSeed) {
+    public SnakeBoard(int width, int height, long foodSeed, boolean warpWalls) {
         this.width = width;
         this.height = height;
-        snake = new SnakeObject(RIGHT, 3, 0, 0, squareSize, squareBuffer, width, height);
+        snake = new SnakeObject(RIGHT, 3, 0, 0, squareSize, squareBuffer, warpWalls, width, height);
         food = new SnakeFood(width, height, scale, foodSeed);
     } 
     
@@ -46,11 +47,12 @@ public class SnakeBoard {
      * Creates new SnakeBoard (with new Snake and new Food)
      * @param width Maximum X coordinate before the Snake should die
      * @param height Maximum Y coordinate before the Snake should die
+     * @param warpWalls If true, the snake will warp from one side to the other upon contact with a wall
      */
-    public SnakeBoard(int width, int height) {
+    public SnakeBoard(int width, int height, boolean warpWalls) {
         this.width = width;
         this.height = height;
-        snake = new SnakeObject(RIGHT, 3, 0, 0, squareSize, squareBuffer, width, height);
+        snake = new SnakeObject(RIGHT, 3, 0, 0, squareSize, squareBuffer, warpWalls, width, height);
         food = new SnakeFood(width, height, scale, 1537231739434l);
     } 
     
@@ -72,7 +74,7 @@ public class SnakeBoard {
     private void eatFood() {
         snake.addScore(foodScore);
         snake.addJoint();
-        food.getNew();
+        food.getNew(snake);
         ate = true;
     }
     

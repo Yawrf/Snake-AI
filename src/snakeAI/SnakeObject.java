@@ -22,6 +22,8 @@ public class SnakeObject {
     private int buffer;
     private boolean dead = false;
     
+    private boolean warpWalls;
+    
     private long score = 0;
     
     /**
@@ -32,10 +34,11 @@ public class SnakeObject {
      * @param startY - Initial y Position
      * @param squareSize - Size of SnakeJoints
      * @param bufferSize - Size of space between SnakeJoints
+     * @param warpWalls If true, the snake will warp from one side to the other upon contact with a wall
      * @param xBorder - Maximum x Snake can be before dying
      * @param yBorder - Maximum y Snake can be before dying
      */
-    public SnakeObject(Direction startMove, int startJoints, int startX, int startY, int squareSize, int bufferSize, int xBorder, int yBorder) {
+    public SnakeObject(Direction startMove, int startJoints, int startX, int startY, int squareSize, int bufferSize, boolean warpWalls, int xBorder, int yBorder) {
         moving = startMove;
         size = squareSize;
         buffer = bufferSize;
@@ -43,6 +46,7 @@ public class SnakeObject {
         for(int i = 0; i < startJoints; ++i) {
             joints.add(new SnakeJoint(startX, startY, size, buffer));
         }
+        this.warpWalls = warpWalls;
         maxX = xBorder;
         maxY = yBorder;
     }
@@ -53,10 +57,11 @@ public class SnakeObject {
      * @param startJoints - Number of SnakeJoints to start with
      * @param startX - Initial x Position
      * @param startY - Initial y Position
+     * @param warpWalls If true, the snake will warp from one side to the other upon contact with a wall
      * @param xBorder - Maximum x Snake can be before dying
      * @param yBorder - Maximum y Snake can be before dying
      */
-    public SnakeObject(Direction startMove, int startJoints, int startX, int startY, int xBorder, int yBorder) {
+    public SnakeObject(Direction startMove, int startJoints, int startX, int startY, boolean warpWalls, int xBorder, int yBorder) {
         moving = startMove;
         size = 9;
         buffer = 1;
@@ -64,6 +69,7 @@ public class SnakeObject {
         for(int i = 0; i < startJoints; ++i) {
             joints.add(new SnakeJoint(startX, startY, size, buffer));
         }
+        this.warpWalls = warpWalls;
         maxX = xBorder;
         maxY = yBorder;
     }
@@ -92,7 +98,15 @@ public class SnakeObject {
         int headX = joints.get(0).getX();
         int headY = joints.get(0).getY();
         if(headX >= maxX || headX < 0 || headY >= maxY || headY < 0) {
-            dead = true;
+            if(!warpWalls) {
+                dead = true;
+            } else {
+                headX += maxX;
+                headY += maxY;
+                headX %= maxX;
+                headY %= maxY;
+                joints.get(0).setPos(new int[] {headX, headY});
+            }
         }
         for(int i = 1; i < joints.size(); ++i) {
             if(!dead) {
@@ -297,6 +311,7 @@ public class SnakeObject {
     
     /**
      * Calculates the x distance and y distance from the head (leading SnakeJoint) to the food
+     * If warpWalls is enabled, the distance will also be checked through warps and the closest method will be selected
      * @param foodX
      * @param foodY 
      */
@@ -306,6 +321,31 @@ public class SnakeObject {
         
         foodDistX = foodX - headX;
         foodDistY = foodY - headY;
+        if(warpWalls) {
+            int warpUpX = (foodX + maxX - headX);
+            int warpUpY = (foodY + maxY - headY);
+            int warpDownX = (foodX - maxX - headX);
+            int warpDownY = (foodY - maxY - headY);
+            
+            int[] xVals = new int[]{ foodDistX, warpUpX, warpDownX};
+            int[] yVals = new int[]{ foodDistY, warpUpY, warpDownY};
+            
+            int temp = Integer.MAX_VALUE;
+            for(int i : xVals) {
+                if(Math.abs(i) < temp) {
+                    temp = i;
+                } 
+            }
+            foodDistX = temp;
+            temp = Integer.MAX_VALUE;
+            for(int i : yVals) {
+                if(Math.abs(i) < temp) {
+                    temp = i;
+                } 
+            }
+            foodDistY = temp;
+        }
+        
         
 //          System.out.println(foodDistX + ", " + foodDistY);
     }
@@ -349,18 +389,19 @@ public class SnakeObject {
                 }
             }
         }
-        
-        if(headX == 0) {
-            leftSafe = false;
-        }
-        if(headX == maxX - (size + buffer)) {
-            rightSafe = false;
-        }
-        if(headY == 0) {
-            upSafe = false;
-        }
-        if(headY == maxY - (size + buffer)) {
-            downSafe = false;
+        if(!warpWalls) {
+            if(headX == 0) {
+                leftSafe = false;
+            }
+            if(headX == maxX - (size + buffer)) {
+                rightSafe = false;
+            }
+            if(headY == 0) {
+                upSafe = false;
+            }
+            if(headY == maxY - (size + buffer)) {
+                downSafe = false;
+            }
         }
 //        
 //        System.out.println(headX + ", " + headY);

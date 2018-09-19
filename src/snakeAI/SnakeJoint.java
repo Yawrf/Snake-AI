@@ -69,6 +69,15 @@ public class SnakeJoint {
     }
     
     /**
+     * Sets the position of the Joint to a given position
+     * @param coords Coordinates in the format: [xPos, yPos]
+     */
+    public void setPos(int[] coords) {
+        xPos = coords[0];
+        yPos = coords[1];
+    }
+    
+    /**
      * Moves the Joint one position in the given Direction
      * @param d Direction to move
      */

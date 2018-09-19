@@ -34,7 +34,7 @@ public class FXMLDocumentController implements Initializable {
     private SnakeBoard b;
     
     private Timer timer;
-    private int baseSpeed = 100; // base ms the timer starts at
+    private int baseSpeed = 1; // base ms the timer starts at
     private int speed = 0; 
     private int speedMod = 5; // ms faster the game gets each time the snake eats
     
@@ -42,12 +42,14 @@ public class FXMLDocumentController implements Initializable {
     
     private int count = 1; //Currently Unused
     
-    private boolean acidMode = false;
+    private boolean acidMode = false; //Makes all colours scramble each time food is collected
     private Color snakeColor = Color.BLACK;
     private Color bgColor = Color.WHITE;
     private Color foodColor = Color.RED;
     private Color scoreColor = Color.BLACK;
     private boolean scramble = true;
+    
+    private boolean warpWalls = true; //Makes snake warp from one side of board to other when hitting a wall
     
     /**
      * Runs all the main processes:
@@ -193,6 +195,7 @@ public class FXMLDocumentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
+        speed = baseSpeed;
         setTimer(speed);
         setBoard();
         
@@ -203,7 +206,7 @@ public class FXMLDocumentController implements Initializable {
      * Resets the speed to baseSpeed
      */
     private void setBoard() {
-        b = new SnakeBoard((int)board.getWidth(), (int)board.getHeight());
+        b = new SnakeBoard((int)board.getWidth(), (int)board.getHeight(), warpWalls);
         speed = baseSpeed;
     }
     
