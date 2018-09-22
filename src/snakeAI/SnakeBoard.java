@@ -14,20 +14,20 @@ import static snakeAI.Snake.Direction.*;
  */
 public class SnakeBoard {
     
-    private int width;
-    private int height;
+    protected int width;
+    protected int height;
     
-    private final int scale = 10;
-    private final int squareSize = 9;
-    private final int squareBuffer = 1;
+    protected final int scale = 10;
+    protected final int squareSize = 9;
+    protected final int squareBuffer = 1;
     
-    private final int foodScore = 100;
-    private final int stepScore = 1;
+    protected final int foodScore = 100;
+    protected final int stepScore = 1;
     
-    private boolean ate = false;
+    protected boolean ate = false;
     
-    private SnakeObject snake;
-    private SnakeFood food;
+    protected SnakeObject snake;
+    protected SnakeFood food;
     
     /**
      * Creates new SnakeBoard (with new Snake and new Food)
@@ -60,7 +60,7 @@ public class SnakeBoard {
      * Checks if the Snake is at the same spot as the food
      * @return True if Snake is at food, else False
      */
-    private boolean checkFood() {
+    protected boolean checkFood() {
         if(snake.atSpot(food.getX(), food.getY())) {
             return true;
         }
@@ -68,10 +68,11 @@ public class SnakeBoard {
     }
     
     /**
+     * - Not for generational use -
      * Does all actions for the Snake eating the food
      * * Assumes Snake is at proper location or that location doesn't matter
      */
-    private void eatFood() {
+    protected void eatFood() {
         snake.addScore(foodScore);
         snake.addJoint();
         food.getNew(snake);
@@ -79,6 +80,7 @@ public class SnakeBoard {
     }
     
     /**
+     * - Not for generational use -
      * Returns if the Snake has eaten since the last time resetAte() was called
      * @return 
      */
@@ -87,6 +89,7 @@ public class SnakeBoard {
     }
     
     /**
+     * - Not for generational use -
      * Resets the ate boolean to false
      */
     public void resetAte() {
@@ -118,6 +121,7 @@ public class SnakeBoard {
     }
     
     /**
+     * - Not for generational use -
      * Returns the SnakeObject in use
      * @return 
      */
@@ -126,6 +130,7 @@ public class SnakeBoard {
     }
     
     /**
+     * - Not for generational use -
      * Returns the SnakeFood in use
      * @return 
      */

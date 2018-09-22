@@ -33,19 +33,6 @@ public class Snake extends Application {
     public static void main(String[] args) {
         launch(args);
         System.exit(0);
-//        SnakeObject s = new SnakeObject(Direction.RIGHT, 3, 0, 0);
-//        System.out.println(s);
-//        s.move();
-//        System.out.println(s);
-//        s.move();
-//        System.out.println(s);
-//        s.setDirection(Direction.DOWN);
-//        s.move();
-//        System.out.println(s);
-//        s.move();
-//        System.out.println(s);
-//        s.move();
-//        System.out.println(s);
     }
     
     public static enum Direction {

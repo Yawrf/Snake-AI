@@ -21,6 +21,7 @@ public class SnakeObject {
     private int size;
     private int buffer;
     private boolean dead = false;
+    private boolean ate = false;
     
     private boolean warpWalls;
     
@@ -154,6 +155,10 @@ public class SnakeObject {
         return score;
     }
     
+    public void resetScore() {
+        score = 0;
+    }
+    
     /**
      * Returns the ArrayList of the Snake's Joints
      * @return 
@@ -186,6 +191,18 @@ public class SnakeObject {
         return dead;
     }
     
+    public boolean getAte() {
+        return ate;
+    }
+    
+    public void resetAte() {
+        ate = false;
+    }
+    
+    public void setAte() {
+        ate = true;
+    }
+    
     /**
      * Returns the size of the SnakeJoints
      * @return 
@@ -200,6 +217,10 @@ public class SnakeObject {
      */
     public int getBuffer() {
         return buffer;
+    }
+    
+    public boolean getWarpWalls() {
+        return warpWalls;
     }
     
     @Override
@@ -227,6 +248,8 @@ public class SnakeObject {
     private final int maxX;
     private final int maxY;
     
+    private SnakeBrainAdaptor sba = new SnakeBrainAdaptor();
+    
     /**
      * Runs all the main Processes:
      * * Checks if each direction is safe to move in
@@ -239,9 +262,25 @@ public class SnakeObject {
         if(!dead) {
             checkSafe();
             calcFoodDist(foodX, foodY);
-            dumbAI();
+//            dumbAI(); // Enable for DumbAI, otherwise disable
+            sba.send(upSafe, rightSafe, downSafe, leftSafe, foodX, foodY, joints.get(0).getX(), joints.get(0).getY(), maxX, maxY); //Enable for Generational, otherwise disable
+            moving = sba.getMove(); //Enable for Generational, otherwise disable
         }
     }
+    
+    
+    public void setSnakeBrainAdaptor(SnakeBrainAdaptor sba) {
+        this.sba = sba;
+    }
+    public SnakeBrainAdaptor getSnakeBrainAdaptor() {
+        return sba;
+    }
+    
+    public void modifyBrain() {
+        sba.modifyBrain();
+    }
+    
+// ------------------------------------------------------------------------------------------------------------------
     
     /**
      * Calculates which direction is both safe and advantageous to move in.
