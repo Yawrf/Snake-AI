@@ -2,7 +2,9 @@
 Java coded Snake game under optional AI control
 
  -- DumbAI
+ 
  -- NeuralNet
+ 
  -- UserControl
 
 
@@ -28,4 +30,4 @@ A Word of Caution:
   
   
 To check out the code of my (really crappy) NeuralNet project, try looking here:
-  https://github.com/Yawrf/NeuralNet
+ - https://github.com/Yawrf/NeuralNet
